@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101c2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="A tiny LSTM that learns your rock paper scissors habits, entirely on your device.">
+<title>Pattern — Rock Paper Scissors</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="app">
+<header><div class="brand"><span class="brandmark">p.</span><div>PATTERN<small>ROCK · PAPER · SCISSORS</small></div></div><button id="settings" class="iconbutton" aria-label="Players and settings">☷</button></header>
+<div class="playerline"><button id="profileButton"><span class="dot"></span><span id="playerName">Player 1</span><span class="chevron">⌄</span></button><span id="roundNumber">ROUND 01</span></div>
+<section class="scoreboard" aria-label="Your score"><div><strong id="wins">0</strong><span>YOU</span></div><div><strong id="ties">0</strong><span>DRAWS</span></div><div><strong id="losses">0</strong><span>LSTM</span></div></section>
+<section class="arena" aria-live="polite"><div class="arenaTop"><span id="matchLabel">YOUR NEXT MOVE</span><span class="live"><i></i> LEARNING LIVE</span></div><div class="hands"><div><span id="yourHand" class="hand">?</span><small>YOU</small></div><span class="versus">vs</span><div><span id="aiHand" class="hand bot">✦</span><small>PATTERN</small></div></div><h1 id="resultTitle">Can I read your mind?</h1><p id="resultSub">My move is locked. Choose yours below.</p></section>
+<section class="play"><div class="sectionlabel"><span>MAKE YOUR MOVE</span><span id="readyLabel">STARTING…</span></div><div class="choices"><button data-move="0" disabled><span>✊</span>Rock</button><button data-move="1" disabled><span>✋</span>Paper</button><button data-move="2" disabled><span>✌️</span>Scissors</button></div></section>
+<section class="brain"><div class="brainhead"><div><span class="eyebrow">INSIDE THE NETWORK</span><h2>What I expected</h2></div><button id="about" class="infobutton" aria-label="How the network learns">i</button></div><div class="probabilities"><div><span>Rock</span><strong id="prob0">—</strong><div class="track"><i id="bar0"></i></div></div><div><span>Paper</span><strong id="prob1">—</strong><div class="track"><i id="bar1"></i></div></div><div><span>Scissors</span><strong id="prob2">—</strong><div class="track"><i id="bar2"></i></div></div></div><p id="learningNote">Predictions appear after the reveal.</p></section>
+<section class="recent"><span class="sectionlabel">YOUR RECENT MOVES</span><div id="history" aria-label="Your last ten moves"><span class="emptyhistory">Your pattern starts here.</span></div></section>
+<footer><span id="offlineStatus"><i class="dot"></i> Preparing offline mode</span><span id="saveStatus">ON-DEVICE AI</span></footer>
+</main>
+<dialog id="profileDialog"><div class="dialoghead"><div><span class="eyebrow">YOUR OPPONENT IS LEARNING</span><h2>Players & backups</h2></div><button class="close iconbutton" aria-label="Close settings">×</button></div><label for="profileSelect">Saved player</label><select id="profileSelect"></select><div class="row"><input id="newName" maxlength="30" placeholder="New player name" aria-label="New player name"><button id="newPlayer" class="primary">Create</button></div><p class="hint">Each player starts with a fresh network and saves automatically on this device.</p><div class="row"><button id="export">Export backup</button><button id="import">Import backup</button></div><input type="file" id="importFile" accept=".json,application/json" hidden><button id="reset" class="danger">Reset this player’s learning</button><p id="profileMessage" class="hint" role="status">Keep a backup before clearing Safari website data.</p></dialog>
+<dialog id="aboutDialog"><div class="dialoghead"><div><span class="eyebrow">SMALL NETWORK. REAL LEARNING.</span><h2>How Pattern learns</h2></div><button class="close iconbutton" aria-label="Close information">×</button></div><p>A fresh LSTM learns to predict your next move from both players’ last 32 moves. It starts with random weights, so give it time to find a pattern.</p><div class="detailgrid"><span>Memory units<strong>32</strong></span><span>Parameters<strong>5,091</strong></span><span>Adam updates<strong id="updates">0</strong></span><span>Recent accuracy<strong id="accuracy">—</strong></span></div><p>After each reveal, two short AdamW updates learn from recent next-move predictions, giving newer rounds more weight. Weight decay and label smoothing reduce overconfidence. Learning stays on your device.</p><p>Pattern always chooses the move with the best expected score. Equally good moves are tied at random. Independent random choices cannot be reliably predicted.</p><p id="lossDetail" class="hint">Accuracy is measured before learning from each move. Chance is 33.3%.</p><div class="installtip">Offline on iPhone: open in Safari while online, wait for “Offline ready,” then Share → Add to Home Screen. Open the home-screen app once online and check “Offline ready” there too.</div><p class="version">PATTERN 1.1.0 · ALL DATA STAYS ON THIS DEVICE</p></dialog>
+<div id="toast" role="status" hidden></div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
